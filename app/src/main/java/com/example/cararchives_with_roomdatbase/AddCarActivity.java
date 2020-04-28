@@ -2,6 +2,7 @@ package com.example.cararchives_with_roomdatbase;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.example.cararchives_with_roomdatbase.Database.DataItemDatabase;
 import com.example.cararchives_with_roomdatbase.Model.DataItem;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,19 +55,22 @@ public class AddCarActivity extends AppCompatActivity {
         edtPrice = findViewById(R.id.edtPrice);
         btnAdd = findViewById(R.id.btnAdd);
 
-        getIntentValue();
+        try {
+            getIntentValue();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         listeners();
 
 
     }
 
-    private void getIntentValue()  {
+    private void getIntentValue() throws IOException {
         if (getIntent().hasExtra("Update")) {
             forUpdate = true;
             if (getIntent().hasExtra("CarDetail")) {
-                int pos = getIntent().getIntExtra("CarDetail",-1);
-                if (pos != -1) {
-                    carDetail = mItems.get(pos);
+               carDetail = getIntent().getExtras().getParcelable("CarDetail");
+                if (carDetail != null) {
                     setUpData();
                 }else {
                     Toast.makeText(activity, "unable to update", Toast.LENGTH_SHORT).show();
@@ -74,16 +80,28 @@ public class AddCarActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpData()  {
-       // imagePath = carDetail.getImage();
-       // imageView.setImageURI(Uri.parse(imagePath));
+    private void setUpData() throws IOException {
+       imagePath = carDetail.getImage();
+        InputStream inputStream = getApplicationContext().getAssets().open(imagePath);
+        if (inputStream != null) {
+            Drawable d = Drawable.createFromStream(inputStream, null);
+            imageView.setImageDrawable(d);
+        }else {
+
+            imageView.setImageURI(Uri.parse(imagePath));
+        }
+       if (imagePath == null) {
+            imagePath = "mclaren.jpg";
+           imageView.setImageURI(Uri.parse(imagePath));
+        }
+
         edtName.setText(carDetail.getItemName());
         edtModel.setText(carDetail.getCategory());
         edtYear.setText(carDetail.getYear());
         edtColor.setText(carDetail.getColor());
         edtVin.setText(carDetail.getVin());
         btnAdd.setText(R.string.update);
-        edtPrice.setText((int) carDetail.getPrice());
+        edtPrice.setText((String.valueOf(carDetail.getPrice())));
     }
     private void listeners() {
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -103,15 +121,15 @@ public class AddCarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 DataItemDatabase diDB = DataItemDatabase.getInstance(activity);
                 if (forUpdate) {
-                    carDetail = new DataItem(carDetail.getItemId(),edtName.getText().toString(), edtName.getText().toString() + " this is the new car",
-                            edtModel.getText().toString(), i, Double.parseDouble(edtPrice.getText().toString()), "mclaren.jpg",
+                    carDetail = new DataItem(carDetail.getItemId(),edtName.getText().toString(), carDetail.getDescription(),
+                            edtModel.getText().toString(), i, Double.parseDouble(edtPrice.getText().toString()), imagePath,
                             edtColor.getText().toString(), edtYear.getText().toString(),
                             edtVin.getText().toString());
                     diDB.dataItemDao().updateDataItem(carDetail);
                 } else {
 
-                    DataItem dataItem = new DataItem(edtName.getText().toString(), edtName.getText().toString() + " this is the new car",
-                            edtModel.getText().toString(), i, Double.parseDouble(edtPrice.getText().toString()), "mclaren.jpg",
+                    DataItem dataItem = new DataItem(carDetail.getItemId(),edtName.getText().toString(), edtName.getText().toString()+ " this is the new car",
+                            edtModel.getText().toString(), i, Double.parseDouble(edtPrice.getText().toString()), imagePath,
                             edtColor.getText().toString(), edtYear.getText().toString(),
                             edtVin.getText().toString());
                     diDB.dataItemDao().insertDataItem(dataItem);

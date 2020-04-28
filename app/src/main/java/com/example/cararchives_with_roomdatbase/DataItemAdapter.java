@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
     private List<DataItem> mItems;
     private Context mContext;
     DataItemDatabase dataItemDatabase;
+    String imageFile = "";
+    InputStream inputStream = null;
 
     public DataItemAdapter(Context context, List<DataItem> items) {
         this.mContext = context;
@@ -52,14 +55,21 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
         final DataItem item = mItems.get(position);
         try {
                   holder.tvName.setText(item.getItemName());
+                  imageFile = item.getImage();
+            inputStream = mContext.getAssets().open(imageFile);
+            if (inputStream != null) {
+                Drawable d = Drawable.createFromStream(inputStream, null);
+                holder.imageView.setImageDrawable(d);
+            }else {
+                holder.imageView.setImageURI(Uri.parse(imageFile));
+            }if (imageFile == null) {
+                imageFile = "mclaren.jpg";
+                InputStream input = mContext.getAssets().open(imageFile);
+                Drawable d = Drawable.createFromStream(input, null);
+                holder.imageView.setImageDrawable(d);
+            }
 
-                      String imageFile = item.getImage();
-                      InputStream inputStream = mContext.getAssets().open(imageFile);
-                      Drawable d = Drawable.createFromStream(inputStream, null);
-                      holder.imageView.setImageDrawable(d);
-
-
-              } catch (IOException e) {
+             } catch (IOException e) {
                   e.printStackTrace();
               }
 
@@ -83,6 +93,13 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
             });
 
 
+
+    }
+
+    DataItem getPositionObject(int position){
+        DataItem d = mItems.get(position);
+
+        return d;
 
     }
      void getDataItemAtPosition(int position) {

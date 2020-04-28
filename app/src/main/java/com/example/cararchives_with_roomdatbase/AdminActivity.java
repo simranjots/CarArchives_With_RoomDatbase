@@ -76,7 +76,8 @@ public class AdminActivity extends AppCompatActivity {
                             public void onClick(int pos) {
                                 // TODO: OnUpdate
                                 Intent intent = new Intent(getApplicationContext(), AddCarActivity.class);
-                                intent.putExtra("CarDetail", pos);
+                                item =   mItemAdapter.getPositionObject(pos);
+                                intent.putExtra("CarDetail", item);
                                 intent.putExtra("Update", true);
                                 startActivity(intent);
                             }

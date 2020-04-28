@@ -13,7 +13,6 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.example.cararchives_with_roomdatbase.Model.DataItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Database(entities = DataItem.class,exportSchema = false,version = 1)
