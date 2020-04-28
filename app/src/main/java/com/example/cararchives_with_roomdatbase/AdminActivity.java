@@ -62,7 +62,10 @@ public class AdminActivity extends AppCompatActivity {
                             @Override
                             public void onClick(int pos) {
                                 // TODO: onDelete
+                                item = mItemAdapter.getPositionObject(pos);
+                                Toast.makeText(AdminActivity.this, String.valueOf(item.getItemId()), Toast.LENGTH_SHORT).show();
                                 mItemAdapter.getDataItemAtPosition(pos);
+
                             }
                         }
                 ));
@@ -77,6 +80,7 @@ public class AdminActivity extends AppCompatActivity {
                                 // TODO: OnUpdate
                                 Intent intent = new Intent(getApplicationContext(), AddCarActivity.class);
                                 item =   mItemAdapter.getPositionObject(pos);
+                                Toast.makeText(AdminActivity.this, String.valueOf(item.getItemId()), Toast.LENGTH_SHORT).show();
                                 intent.putExtra("CarDetail", item);
                                 intent.putExtra("Update", true);
                                 startActivity(intent);

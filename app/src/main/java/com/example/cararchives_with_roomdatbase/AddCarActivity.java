@@ -55,17 +55,13 @@ public class AddCarActivity extends AppCompatActivity {
         edtPrice = findViewById(R.id.edtPrice);
         btnAdd = findViewById(R.id.btnAdd);
 
-        try {
-            getIntentValue();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        getIntentValue();
         listeners();
 
 
     }
 
-    private void getIntentValue() throws IOException {
+    private void getIntentValue() {
         if (getIntent().hasExtra("Update")) {
             forUpdate = true;
             if (getIntent().hasExtra("CarDetail")) {
@@ -80,21 +76,8 @@ public class AddCarActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpData() throws IOException {
-       imagePath = carDetail.getImage();
-        InputStream inputStream = getApplicationContext().getAssets().open(imagePath);
-        if (inputStream != null) {
-            Drawable d = Drawable.createFromStream(inputStream, null);
-            imageView.setImageDrawable(d);
-        }else {
-
-            imageView.setImageURI(Uri.parse(imagePath));
-        }
-       if (imagePath == null) {
-            imagePath = "mclaren.jpg";
-           imageView.setImageURI(Uri.parse(imagePath));
-        }
-
+    private void setUpData() {
+        imagePath = carDetail.getImage();
         edtName.setText(carDetail.getItemName());
         edtModel.setText(carDetail.getCategory());
         edtYear.setText(carDetail.getYear());
@@ -127,12 +110,12 @@ public class AddCarActivity extends AppCompatActivity {
                             edtVin.getText().toString());
                     diDB.dataItemDao().updateDataItem(carDetail);
                 } else {
-
-                    DataItem dataItem = new DataItem(carDetail.getItemId(),edtName.getText().toString(), edtName.getText().toString()+ " this is the new car",
-                            edtModel.getText().toString(), i, Double.parseDouble(edtPrice.getText().toString()), imagePath,
+                    carDetail = new DataItem(edtName.getText().toString(), edtName.getText().toString()+ " this is the new car",
+                            edtModel.getText().toString(), i, Double.parseDouble(edtPrice.getText().toString()), "aston.jpg",
                             edtColor.getText().toString(), edtYear.getText().toString(),
                             edtVin.getText().toString());
-                    diDB.dataItemDao().insertDataItem(dataItem);
+                    mItems.add(carDetail);
+                    diDB.seedDatabase(mItems);
                     if (i < 4) {
                         i = 0;
                     }

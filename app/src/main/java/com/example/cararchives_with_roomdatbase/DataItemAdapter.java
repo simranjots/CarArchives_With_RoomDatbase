@@ -56,19 +56,9 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
         try {
                   holder.tvName.setText(item.getItemName());
                   imageFile = item.getImage();
-            inputStream = mContext.getAssets().open(imageFile);
-            if (inputStream != null) {
+                  inputStream = mContext.getAssets().open(imageFile);
                 Drawable d = Drawable.createFromStream(inputStream, null);
                 holder.imageView.setImageDrawable(d);
-            }else {
-                holder.imageView.setImageURI(Uri.parse(imageFile));
-            }if (imageFile == null) {
-                imageFile = "mclaren.jpg";
-                InputStream input = mContext.getAssets().open(imageFile);
-                Drawable d = Drawable.createFromStream(input, null);
-                holder.imageView.setImageDrawable(d);
-            }
-
              } catch (IOException e) {
                   e.printStackTrace();
               }
@@ -83,24 +73,13 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
             }
         });
 
-            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Toast.makeText(mContext, "You can update " + item.getItemName(),
-                            Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
-
 
 
     }
 
     DataItem getPositionObject(int position){
         DataItem d = mItems.get(position);
-
         return d;
-
     }
      void getDataItemAtPosition(int position) {
 
@@ -118,7 +97,6 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
     public int getItemCount() {
         return mItems.size();
     }
-
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

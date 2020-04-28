@@ -42,8 +42,7 @@ public abstract class DataItemDatabase extends RoomDatabase {
 
     }
 
-    public  abstract DataItemDao dataItemDao();
-
+    public abstract DataItemDao dataItemDao();
 
     @NonNull
     @Override
