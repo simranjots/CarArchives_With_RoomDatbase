@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">CarArchives_With_RoomDatbase</string>
+    <string name="login_with">Login with</string>
+    <string name="admin">Admin</string>
+    <string name="user">User</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="name">Name</string>
+    <string name="model">Model</string>
+    <string name="year">Year</string>
+    <string name="color">Color</string>
+    <string name="vin">VIN</string>
+    <string name="price">Price</string>
+    <string name="add">Add</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+</resources>

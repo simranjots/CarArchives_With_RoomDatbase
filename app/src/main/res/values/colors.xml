@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#157573</color>
+    <color name="colorPrimaryDark">#43BDBA</color>
+    <color name="colorAccent">#399F9D</color>
+    <color name="black">#000000</color>
+    <color name="TextBoxBackcolor">#A6B3B3</color>
+    <color name="ButtonColor">#157573</color>
+    <color name ="colorHint">#FFFFFF</color>
+    <color name="loginButtoncolor">#FFFFFF</color>
+    <color name = "InputTextColor">#FFFFFF</color>
+    <color name="white">#ffffff</color>
+    <color name="year">#999999</color>
+    <color name="title">#222222</color>
+    <color name="bg">#FFA6B3B3</color>
+</resources>
